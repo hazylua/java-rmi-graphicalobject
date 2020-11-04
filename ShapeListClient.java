@@ -1,9 +1,6 @@
 import java.rmi.*;
-import java.rmi.server.*;
 import java.util.*;
 import java.util.Vector;
-import java.util.Iterator;
-import java.util.Random;
 import java.awt.Rectangle;
 import java.awt.Color;
 
@@ -13,23 +10,33 @@ public class ShapeListClient {
         ShapeList aShapeList = null;
 
         try {
-            System.out.println("Press\n1 - List shapes;\n2 - Insert a square shape;\n0 - Exit program.");
+            System.out.println(
+                    "Client info:\n\nPress\n1 - List shapes;\n2 - Insert a square shape;\n0 - Exit program.\n\n");
 
             aShapeList = ((ShapeList) Naming.lookup("//localhost:1099/ShapeList"));
 
             Vector sList;
             Scanner option = new Scanner(System.in);
+            System.out.println("Choice: ");
+            int choice = option.nextInt();
             do {
-                switch (option.nextInt()) {
+                switch (choice) {
 
                     case 1: {
                         sList = aShapeList.allShapes();
-                        for (int i = 0; i < sList.size(); i++) {
-                            // Casting
-                            GraphicalObject view = ((Shape) sList.elementAt(i)).getAllState();
-                            view.print();
+                        if (sList.size() == 0) {
+                            System.out.println("List is empty.");
+                        } else {
+                            System.out.println("Listing shapes...\n");
+                            for (int i = 0; i < sList.size(); i++) {
+                                // Casting para (Shape).
+                                GraphicalObject view = ((Shape) sList.elementAt(i)).getAllState();
+                                view.print();
+                            }
                         }
+
                     }
+                        break;
                     case 2: {
                         String Type = "Square";
                         Rectangle Shape = new Rectangle(10, 10);
@@ -39,10 +46,20 @@ public class ShapeListClient {
 
                         GraphicalObject g = new GraphicalObject(Type, Shape, lineColor, fillColor, isFilled);
                         aShapeList.newShape(g);
-                    }
-                }
 
-            } while (option.nextInt() != 0);
+                        System.out.println("Added a square.\n");
+                    }
+                        break;
+                    default: {
+                        System.out.println("No can do.\n");
+                    }
+                        break;
+                }
+                System.out.println("Choice: ");
+
+                choice = option.nextInt();
+            } while (choice != 0);
+            System.out.println("Bye!");
 
         } catch (RemoteException e) {
             System.out.println("Server: " + e.getMessage());

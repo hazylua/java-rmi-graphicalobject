@@ -22,11 +22,13 @@ public class GraphicalObject implements Serializable {
   }
 
   public void print() {
-    System.out.print(type + '\n');
-    System.out.print(enclosing.x + " , " + enclosing.y + " , " + enclosing.width + " , " + enclosing.height + '\n');
+
+    System.out.print("Type: " + type + '\n');
+    System.out.print(
+        "Dimensions: " + enclosing.x + " , " + enclosing.y + " , " + enclosing.width + " , " + enclosing.height + '\n');
     if (isFilled)
-      System.out.println("is filled");
+      System.out.println("Fill: is filled.\n");
     else
-      System.out.println("not filled");
+      System.out.println("Fill: not filled.\n");
   }
 }
